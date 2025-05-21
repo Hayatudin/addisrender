@@ -98,3 +98,43 @@
     @apply font-montserrat;
   }
 }
+
+@layer components {
+  .service-card {
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 
+           hover:shadow-lg hover:-translate-y-1 cursor-pointer backdrop-blur-sm
+           border border-gray-100 hover:border-blue-100;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .portfolio-item {
+    @apply relative overflow-hidden rounded-lg shadow-md transition-all 
+           duration-300 hover:shadow-xl hover:scale-[1.02];
+  }
+
+  .cta-button {
+    @apply bg-rend-accent text-rend-dark py-3 px-6 rounded-md 
+           font-semibold transition duration-300 hover:bg-rend-dark 
+           hover:text-rend-accent transform hover:-translate-y-1;
+  }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md rounded-xl shadow-lg 
+           border border-white/20 p-6 transition-all duration-300 
+           hover:shadow-xl hover:bg-white/80;
+  }
+
+  .futuristic-border {
+    @apply relative before:absolute before:inset-0 before:rounded-lg 
+           before:p-[1px] before:bg-gradient-to-r before:from-blue-400 
+           before:to-teal-400 before:content-[''] before:opacity-70 
+           before:transition-opacity hover:before:opacity-100;
+  }
