@@ -96,3 +96,87 @@ const AdminPage = () => {
                       onClick={() => setActiveView("projects")}
                       isActive={activeView === "projects"}
                     ></SidebarMenuButton>
+                    <FileUp className="h-4 w-4" />
+                      <span>Quote Files</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton 
+                      onClick={() => setActiveView("inquiries")}
+                      isActive={activeView === "inquiries"}
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      <span>Inquiries</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>Management</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton 
+                      onClick={() => setActiveView("services")}
+                      isActive={activeView === "services"}
+                    >
+                      <PenTool className="h-4 w-4" />
+                      <span>Services</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton 
+                      onClick={() => setActiveView("email")}
+                      isActive={activeView === "email"}
+                    >
+                      <Mail className="h-4 w-4" />
+                      <span>Email</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarGroup>
+              <SidebarGroupLabel>System</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton 
+                      onClick={() => setActiveView("settings")}
+                      isActive={activeView === "settings"}
+                    >
+                      <Settings className="h-4 w-4" />
+                      <span>Settings</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            <SidebarFooter className="mt-auto p-4">
+              <Button 
+                variant="outline" 
+                className="w-full" 
+                onClick={() => signOut()}
+              >
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </SidebarFooter>
+          </SidebarContent>
+        </Sidebar>
+        
+        <SidebarInset>
+          <main className="flex-1 overflow-auto p-8">
+            {renderContent()}
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
+  );
+};
+
+export default AdminPage;
