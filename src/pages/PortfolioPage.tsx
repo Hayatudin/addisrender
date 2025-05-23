@@ -201,3 +201,50 @@ const PortfolioPage = () => {
                     className={filter === "residential" ? "bg-rend-gray" : ""}
                     onClick={() => setFilter("residential")}
                   ></DropdownMenuItem>
+                  Residential
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={filter === "commercial" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("commercial")}
+                  >
+                    Commercial
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={filter === "cultural" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("cultural")}
+                  >
+                    Cultural
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={filter === "luxury" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("luxury")}
+                  >
+                    Luxury
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+
+          {/* Tabs Navigation */}
+          <Tabs defaultValue="all" className="mb-12">
+            <TabsList className="grid grid-cols-2 md:grid-cols-6 gap-2 bg-transparent">
+              <TabsTrigger 
+                value="all" 
+                onClick={() => setFilter("all")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              >
+                All Work
+              </TabsTrigger>
+              <TabsTrigger 
+                value="interior" 
+                onClick={() => setFilter("interior")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              >
+                Interior
+              </TabsTrigger>
+              <TabsTrigger 
+                value="residential" 
+                onClick={() => setFilter("residential")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              ></TabsTrigger>
