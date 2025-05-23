@@ -311,3 +311,54 @@ const PortfolioPage = () => {
                 <p className="text-white/80 mb-6">
                   Our team leverages cutting-edge technology to create visual experiences that transcend traditional rendering capabilities. From real-time ray tracing to AI-enhanced texturing, we're constantly evolving our craft.
                 </p>
+                <div className="grid grid-cols-2 gap-6 mb-8">
+                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+                    <Layers className="text-rend-accent h-5 w-5 mb-2" />
+                    <h4 className="text-white font-medium mb-1">Advanced Materials</h4>
+                    <p className="text-white/70 text-sm">Physically-based rendering with subsurface scattering and procedural textures</p>
+                  </div>
+                  <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
+                    <Award className="text-rend-accent h-5 w-5 mb-2" />
+                    <h4 className="text-white font-medium mb-1">Immersive Lighting</h4>
+                    <p className="text-white/70 text-sm">Dynamic illumination systems with global illumination and HDRI mapping</p>
+                  </div>
+                </div>
+                
+                <Button className="bg-rend-accent hover:bg-rend-accent/80 text-rend-dark w-fit">
+                  Explore Our Technology <ArrowRight className="h-4 w-4 ml-1" />
+                </Button>
+              </div>
+              
+              <div className="relative h-full min-h-[300px] md:min-h-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-rend-dark/80 to-transparent md:from-transparent z-10"></div>
+                <img 
+                  src="https://images.unsplash.com/photo-1523800503107-5bc3ba2a6f81?q=80&w=2080" 
+                  alt="Advanced 3D Visualization Technology" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="mt-20 md:mt-32 bg-rend-gray rounded-xl p-8 md:p-12">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-semibold text-rend-dark mb-3">Ready to bring your vision to life?</h2>
+                <p className="text-rend-light/80 max-w-xl">Let's collaborate on your next project and create stunning visualizations that exceed expectations.</p>
+              </div>
+              <Button 
+                size="lg" 
+                className="bg-rend-accent hover:bg-rend-accent/80 text-rend-dark font-medium"
+              >
+                Start a Project <ArrowUpRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PortfolioPage;
