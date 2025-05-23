@@ -141,3 +141,63 @@ const PortfolioPage = () => {
       if (sortBy === "featured") return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
       return 0;
     });
+    return (
+    <div className="bg-white">
+      <Navbar />
+      <div className="pt-24 pb-20">
+        <div className="container mx-auto px-4 max-w-7xl">
+          {/* Header Section */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16">
+            <div className="mb-6 md:mb-0">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-rend-dark mb-3">Our Work</h1>
+              <p className="text-rend-light/80 max-w-2xl">
+                Explore our showcase of photorealistic visualizations crafted for clients across industries, 
+                from architectural concepts to interior designs.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    <span className="hidden sm:inline">Filter & Sort</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <div className="p-2 font-medium text-sm text-rend-dark">Sort By</div>
+                  <DropdownMenuItem 
+                    className={sortBy === "newest" ? "bg-rend-gray" : ""}
+                    onClick={() => setSortBy("newest")}
+                  >
+                    Newest First
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={sortBy === "oldest" ? "bg-rend-gray" : ""}
+                    onClick={() => setSortBy("oldest")}
+                  >
+                    Oldest First
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={sortBy === "featured" ? "bg-rend-gray" : ""}
+                    onClick={() => setSortBy("featured")}
+                  >
+                    Featured Projects
+                  </DropdownMenuItem>
+                  <div className="p-2 font-medium text-sm text-rend-dark mt-2">Categories</div>
+                  <DropdownMenuItem 
+                    className={filter === "all" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("all")}
+                  >
+                    All Projects
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={filter === "interior" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("interior")}
+                  >
+                    Interior Design
+                  </DropdownMenuItem>
+                  <DropdownMenuItem 
+                    className={filter === "residential" ? "bg-rend-gray" : ""}
+                    onClick={() => setFilter("residential")}
+                  ></DropdownMenuItem>
