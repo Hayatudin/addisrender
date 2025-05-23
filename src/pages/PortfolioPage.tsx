@@ -91,3 +91,53 @@ const workItems: WorkItem[] = [
     image: "/lovable-uploads/af9e7a9b-7fd8-4240-a147-88dc88f2667a.png",
     year: "2022"
   },
+  {
+    id: "modern-villa",
+    title: "Contemporary Poolside Villa",
+    category: "luxury",
+    description: "Sleek modern villa with infinity pool, stone accents, and integrated indoor-outdoor living areas.",
+    client: "Premium Properties",
+    image: "/lovable-uploads/929ec1c4-ceed-4675-ac29-311927eb3514.png",
+    year: "2023",
+    featured: true
+  },
+  {
+    id: "hospital-complex", 
+    title: "Modern Hospital Complex",
+    category: "commercial",
+    description: "State-of-the-art healthcare facility with innovative design elements and functional architecture.",
+    client: "Health & Wellness Group",
+    image: "/lovable-uploads/5fc029a7-8d14-4f83-8673-13934f353824.png",
+    year: "2022"
+  },
+  {
+    id: "mixed-use-tower",
+    title: "Mixed-Use Residential Tower",
+    category: "commercial",
+    description: "Modern residential high-rise with integrated commercial facilities and distinctive facade treatment.",
+    client: "Metropolitan Development Corp",
+    image: "/lovable-uploads/4d583b79-663a-4657-bfee-c866236caaa8.png",
+    year: "2022"
+  }
+];
+
+// Extract the portfolio items by category
+const interiorItems = workItems.filter(item => item.category === "interior");
+const residentialItems = workItems.filter(item => item.category === "residential");
+const commercialItems = workItems.filter(item => item.category === "commercial");
+const culturalItems = workItems.filter(item => item.category === "cultural");
+const luxuryItems = workItems.filter(item => item.category === "luxury");
+
+const PortfolioPage = () => {
+  const [filter, setFilter] = useState<Category>("all");
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+
+  // Filter and sort items
+  const filteredItems = workItems
+    .filter(item => filter === "all" ? true : item.category === filter)
+    .sort((a, b) => {
+      if (sortBy === "newest") return a.year > b.year ? -1 : 1;
+      if (sortBy === "oldest") return a.year < b.year ? -1 : 1;
+      if (sortBy === "featured") return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      return 0;
+    });
