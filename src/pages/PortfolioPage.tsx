@@ -248,3 +248,66 @@ const PortfolioPage = () => {
                 onClick={() => setFilter("residential")}
                 className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
               ></TabsTrigger>
+              Residential
+              </TabsTrigger>
+              <TabsTrigger 
+                value="commercial" 
+                onClick={() => setFilter("commercial")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              >
+                Commercial
+              </TabsTrigger>
+              <TabsTrigger 
+                value="cultural" 
+                onClick={() => setFilter("cultural")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              >
+                Cultural
+              </TabsTrigger>
+              <TabsTrigger 
+                value="luxury" 
+                onClick={() => setFilter("luxury")}
+                className="data-[state=active]:bg-rend-dark data-[state=active]:text-white"
+              >
+                Luxury
+              </TabsTrigger>
+            </TabsList>
+
+            {/* Content for each tab */}
+            <TabsContent value="all" className="mt-8">
+              <PortfolioGrid items={filteredItems} />
+            </TabsContent>
+
+            <TabsContent value="interior" className="mt-8">
+              <PortfolioGrid items={interiorItems} />
+            </TabsContent>
+
+            <TabsContent value="residential" className="mt-8">
+              <PortfolioGrid items={residentialItems} />
+            </TabsContent>
+
+            <TabsContent value="commercial" className="mt-8">
+              <PortfolioGrid items={commercialItems} />
+            </TabsContent>
+
+            <TabsContent value="cultural" className="mt-8">
+              <PortfolioGrid items={culturalItems} />
+            </TabsContent>
+
+            <TabsContent value="luxury" className="mt-8">
+              <PortfolioGrid items={luxuryItems} />
+            </TabsContent>
+          </Tabs>
+
+          {/* New Innovative Techniques Section */}
+          <div className="mt-20 md:mt-32 bg-gradient-to-r from-rend-dark to-rend-primary rounded-2xl overflow-hidden">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="p-8 md:p-12 flex flex-col justify-center">
+                <div className="flex items-center mb-4">
+                  <Sparkles className="text-rend-accent h-6 w-6 mr-2" />
+                  <h3 className="text-white text-sm font-medium uppercase tracking-wider">Innovation in 3D</h3>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">Pushing the Boundaries of Photorealism</h2>
+                <p className="text-white/80 mb-6">
+                  Our team leverages cutting-edge technology to create visual experiences that transcend traditional rendering capabilities. From real-time ray tracing to AI-enhanced texturing, we're constantly evolving our craft.
+                </p>
