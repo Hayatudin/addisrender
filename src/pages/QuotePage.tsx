@@ -166,3 +166,104 @@ const QuotePage = () => {
       return null;
     }
   };
+  // Save uploaded file information to "projects" table (instead of "quote_files")
+  const saveProjectRecord = async ({
+    userId,
+    fileData,
+    fileName,
+    projectTitle,
+    projectDescription,
+  }: {
+    userId: string;
+    fileData: { url: string; size: number; type: string };
+    fileName: string;
+    projectTitle: string;
+    projectDescription: string | null;
+  }) => {
+    try {
+      const { error } = await supabase.from("projects").insert({
+        user_id: userId,
+        title: projectTitle,
+        description: projectDescription,
+        file_url: fileData.url,
+        file_name: fileName,
+        file_type: fileData.type,
+        file_size: fileData.size,
+      });
+      if (error) {
+        toast({
+          title: "Database Error",
+          description: `Could not save the file (${fileName}) to the database: ${error.message}`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      return true;
+    } catch (err) {
+      toast({
+        title: "Database Error",
+        description: `Unexpected error while saving file to the project table.`,
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to submit your quote request.",
+        variant: "destructive",
+      });
+      navigate(
+        `/login?returnTo=${encodeURIComponent(
+          location.pathname + location.search
+        )}`
+      );
+      return;
+    }
+
+    if (selectedFiles.length === 0) {
+      toast({
+        title: "Files Required",
+        description:
+          "Please upload at least one project file to submit your quote request.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    setUploadProgress(0);
+
+    try {
+      // Use project title as filename by default, and description from form
+      const formData = new FormData(e.currentTarget);
+      const projectTitle = formData.get("name") as string;
+      const projectDescription = formData.get(
+        "project-description"
+      ) as string | null;
+
+      const totalFiles = selectedFiles.length + referenceFiles.length;
+      let completedFiles = 0;
+      let failedFiles = 0;
+
+      const projectUploadPromises = selectedFiles.map(async (file) => {
+        const fileData = await uploadFileToStorage(file);
+        if (fileData) {
+          const result = await saveProjectRecord({
+            userId: user.id,
+            fileData,
+            fileName: file.name,
+            projectTitle,
+            projectDescription,
+          });
+          completedFiles++;
+          setUploadProgress(Math.floor((completedFiles / totalFiles) * 100));
+          return result;
+        }
+        failedFiles++;
+        return false;
+      });
