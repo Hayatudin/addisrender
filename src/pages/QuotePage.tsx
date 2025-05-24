@@ -493,3 +493,50 @@ const QuotePage = () => {
                     )}
                   </div>
                 </div>
+                <div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">5. Project Files (Required)</h2>
+                  <div 
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => handleDrop(e, 'project')}
+                  >
+                    <FileUp className="h-10 w-10 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-2">Drag and drop project files here, or click to browse</p>
+                    <p className="text-gray-500 text-sm mb-4">
+                      Accepted formats: .DWG, .DXF, .RVT, .SKP, .MAX, .3DM, .PLN, .DAE (COLLADA)
+                    </p>
+                    <Button type="button" variant="outline" onClick={() => document.getElementById('file-upload')?.click()}>
+                      Browse Files
+                    </Button>
+                    <input 
+                      type="file" 
+                      id="file-upload"
+                      className="hidden" 
+                      multiple 
+                      accept=".dwg,.dxf,.rvt,.skp,.max,.3dm,.pln,.dae"
+                      onChange={handleFileChange}
+                    />
+                  </div>
+
+                  {selectedFiles.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <p className="font-semibold">Selected Project Files:</p>
+                      <div className="space-y-2">
+                        {selectedFiles.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <span className="text-sm text-gray-600">{file.name}</span>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => removeFile(index, 'project')}
+                              className="text-red-500 hover:text-red-700"
+                              type="button"
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
