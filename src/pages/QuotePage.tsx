@@ -267,3 +267,156 @@ const QuotePage = () => {
         failedFiles++;
         return false;
       });
+      const refUploadPromises = referenceFiles.map(async (file) => {
+        const fileData = await uploadFileToStorage(file);
+        if (fileData) {
+          const result = await saveProjectRecord({
+            userId: user.id,
+            fileData,
+            fileName: file.name,
+            projectTitle: `${projectTitle || "Reference file"}`,
+            projectDescription: "Reference material",
+          });
+          completedFiles++;
+          setUploadProgress(Math.floor((completedFiles / totalFiles) * 100));
+          return result;
+        }
+        failedFiles++;
+        return false;
+      });
+
+      const results = await Promise.all([
+        ...projectUploadPromises,
+        ...refUploadPromises,
+      ]);
+
+      if (results.some((r) => !r)) {
+        toast({
+          title: "Some files failed to upload",
+          description:
+            "Not all files were uploaded successfully. Please try again or contact support.",
+          variant: "destructive",
+        });
+      } else {
+        sonnerToast("Quote Request Submitted!", {
+          description:
+            "Thank you for your request. We'll review your project details and contact you soon.",
+        });
+
+        setSelectedFiles([]);
+        setReferenceFiles([]);
+        setUploadProgress(0);
+        formRef.current?.reset();
+      }
+    } catch (error) {
+      console.error("Error submitting quote:", error);
+      toast({
+        title: "Submission Failed",
+        description:
+          "Failed to submit quote request. Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const removeFile = (index: number, fileType: 'project' | 'reference') => {
+    if (fileType === 'project') {
+      setSelectedFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    } else {
+      setReferenceFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-grow pt-20">
+        <section className="bg-rend-primary text-white py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="font-montserrat font-bold text-4xl md:text-5xl mb-4">Request a Quote</h1>
+            <p className="max-w-2xl mx-auto text-lg">
+              Fill out the form below with your project details, and we'll provide a customized quote.
+            </p>
+          </div>
+        </section>
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-8">
+                <div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">1. Project Type</h2>
+                  <RadioGroup 
+                    value={projectType} 
+                    onValueChange={setProjectType}
+                    disabled={!!plan}
+                  >
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="modeling-only" id="modeling-only" disabled={plan === "standard"} />
+                        <Label htmlFor="modeling-only" className={plan === "standard" ? "opacity-50" : ""}>3D Modeling Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="rendering-only" id="rendering-only" disabled={plan === "basic"} />
+                        <Label htmlFor="rendering-only" className={plan === "basic" ? "opacity-50" : ""}>Rendering Only</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="modeling-rendering" id="modeling-rendering" disabled={plan === "basic" || plan === "standard"} />
+                        <Label htmlFor="modeling-rendering" className={plan === "basic" || plan === "standard" ? "opacity-50" : ""}>3D Modeling & Rendering Package</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="custom" id="custom" disabled={plan !== "custom" && plan !== ""} />
+                        <Label htmlFor="custom" className={plan !== "custom" && plan !== "" ? "opacity-50" : ""}>Custom Project</Label>
+                      </div>
+                    </div>
+                  </RadioGroup>
+                  {plan && (
+                    <div className="bg-blue-50 p-3 rounded-md flex items-start gap-2">
+                      <Info className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-sm text-blue-700">
+                        You've selected the {plan.charAt(0).toUpperCase() + plan.slice(1)} plan. To change project type, please select a different pricing plan.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">2. Service Type</h2>
+                  <Select name="service-type" defaultValue={serviceOptions[plan as keyof typeof serviceOptions]?.[0] || "standard"}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {plan === "basic" || plan === "" ? (
+                        <SelectItem value="basic">Basic 3D Model</SelectItem>
+                      ) : null}
+                      
+                      {plan === "standard" || plan === "" || plan === "premium" ? (
+                        <SelectItem value="standard">Standard 3D Model</SelectItem>
+                      ) : null}
+                      
+                      {plan === "premium" || plan === "" ? (
+                        <SelectItem value="advanced">Advanced 3D Model</SelectItem>
+                      ) : null}
+                      
+                      {plan === "standard" || plan === "" || plan === "premium" ? (
+                        <>
+                          <SelectItem value="basic-rendering">Basic Rendering</SelectItem>
+                          <SelectItem value="advanced-rendering">Advanced Rendering</SelectItem>
+                        </>
+                      ) : null}
+                      
+                      {plan === "premium" || plan === "" ? (
+                        <>
+                          <SelectItem value="animation">Animation & Walkthrough</SelectItem>
+                          <SelectItem value="full-package">Full Package (Model + Rendering + Animation)</SelectItem>
+                        </>
+                      ) : null}
+                      
+                      {plan === "custom" || plan === "" ? (
+                        <SelectItem value="custom-service">Custom Service</SelectItem>
+                      ) : null}
+                    </SelectContent>
+                  </Select>
+                </div>
