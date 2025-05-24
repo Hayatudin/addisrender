@@ -540,3 +540,81 @@ const QuotePage = () => {
                     </div>
                   )}
                 </div>
+                <div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">6. Reference Materials (Optional)</h2>
+                  <div 
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => handleDrop(e, 'reference')}
+                  >
+                    <FileUp className="h-10 w-10 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-2">Drag and drop reference materials here, or click to browse</p>
+                    <p className="text-gray-500 text-sm mb-4">
+                      Photos, sketches, inspirations, or any other reference materials
+                    </p>
+                    <Button type="button" variant="outline" onClick={() => document.getElementById('reference-upload')?.click()}>
+                      Browse Files
+                    </Button>
+                    <input 
+                      type="file" 
+                      id="reference-upload"
+                      className="hidden" 
+                      multiple 
+                      onChange={handleReferenceFileChange}
+                    />
+                  </div>
+
+                  {referenceFiles.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <p className="font-semibold">Selected Reference Materials:</p>
+                      <div className="space-y-2">
+                        {referenceFiles.map((file, index) => (
+                          <div key={index} className="flex items-center justify-between bg-gray-50 p-2 rounded">
+                            <span className="text-sm text-gray-600">{file.name}</span>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              onClick={() => removeFile(index, 'reference')}
+                              className="text-red-500 hover:text-red-700"
+                              type="button"
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {isSubmitting && uploadProgress > 0 && (
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
+                    <div 
+                      className="bg-blue-600 h-2.5 rounded-full transition-all duration-300" 
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                    <p className="text-sm text-gray-600 mt-1">Uploading: {uploadProgress}%</p>
+                  </div>
+                )}
+
+                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : user ? "Submit Quote Request" : "Login to Submit Quote Request"}
+                  {!isSubmitting && <ArrowRight className="ml-2" />}
+                </Button>
+
+                {!user && (
+                  <div className="text-center mt-2 text-sm text-gray-500">
+                    You need to be logged in to submit a quote request. Your form data will be saved.
+                  </div>
+                )}
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
+export default QuotePage;
