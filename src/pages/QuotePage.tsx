@@ -420,3 +420,76 @@ const QuotePage = () => {
                     </SelectContent>
                   </Select>
                 </div>
+<div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">3. Contact Information</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input id="name" name="name" placeholder="Your full name" defaultValue={user?.user_metadata?.full_name || ''} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email Address</Label>
+                      <Input id="email" name="email" type="email" placeholder="your.email@example.com" defaultValue={user?.email || ''} required />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone Number</Label>
+                      <Input id="phone" name="phone" placeholder="Your phone number" />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company Name (Optional)</Label>
+                      <Input id="company" name="company" placeholder="Your company name" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h2 className="font-montserrat font-semibold text-xl text-rend-dark">4. Project Details</h2>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="project-description">Project Description</Label>
+                    <Textarea 
+                      id="project-description" 
+                      name="project-description"
+                      placeholder="Provide a brief description of your project, including type (architectural, product, interior), complexity, and any other relevant details..." 
+                      rows={6} 
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="timeline">Preferred Timeline</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          id="timeline"
+                          type="button"
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !date && "text-muted-foreground"
+                          )}
+                        >
+                          <Calendar className="mr-2 h-4 w-4" />
+                          {date ? format(date, "PPP") : <span>Select your preferred deadline</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <CalendarComponent
+                          mode="single"
+                          selected={date}
+                          onSelect={setDate}
+                          initialFocus
+                          disabled={(date) => date < new Date()}
+                          className={cn("p-3 pointer-events-auto")}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    {date && (
+                      <input 
+                        type="hidden" 
+                        name="preferred-deadline" 
+                        value={date.toISOString()} 
+                      />
+                    )}
+                  </div>
+                </div>
