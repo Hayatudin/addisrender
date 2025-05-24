@@ -87,3 +87,82 @@ const QuotePage = () => {
 
     setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
   };
+  const handleReferenceFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files || []);
+    setReferenceFiles(prevFiles => [...prevFiles, ...files]);
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>, fileType: 'project' | 'reference') => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    
+    if (fileType === 'project') {
+      const validFiles = files.filter(file => {
+        const extension = '.' + file.name.split('.').pop()?.toLowerCase();
+        const isValid = allowedFileTypes.includes(extension);
+        if (!isValid) {
+          toast({
+            title: "Invalid file type",
+            description: `File "${file.name}" is not supported. Please upload files in the following formats: ${allowedFileTypes.join(', ')}`,
+            variant: "destructive",
+          });
+        }
+        return isValid;
+      });
+      setSelectedFiles(prevFiles => [...prevFiles, ...validFiles]);
+    } else {
+      setReferenceFiles(prevFiles => [...prevFiles, ...files]);
+    }
+  };
+
+  const uploadFileToStorage = async (file: File): Promise<{ url: string, size: number, type: string } | null> => {
+    try {
+      const { data: bucketData, error: bucketError } = await supabase
+        .storage
+        .getBucket('quote-files');
+        
+      if (bucketError && bucketError.message.includes('does not exist')) {
+        console.error('Bucket does not exist:', bucketError);
+        toast({
+          title: "Storage Error",
+          description: "The storage system is not properly configured. Please contact support.",
+          variant: "destructive",
+        });
+        return null;
+      }
+      
+      const fileExt = file.name.split('.').pop();
+      const filePath = `${uuidv4()}.${fileExt}`;
+      
+      const { data, error } = await supabase.storage
+        .from('quote-files')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        });
+      
+      if (error) {
+        console.error('Error uploading file:', error);
+        toast({
+          title: "Upload Failed",
+          description: `Failed to upload ${file.name}. ${error.message}`,
+          variant: "destructive",
+        });
+        return null;
+      }
+      
+      return {
+        url: data.path,
+        size: file.size,
+        type: file.type
+      };
+    } catch (error) {
+      console.error('Error in upload process:', error);
+      toast({
+        title: "Upload Error",
+        description: "An unexpected error occurred during upload. Please try again.",
+        variant: "destructive",
+      });
+      return null;
+    }
+  };
