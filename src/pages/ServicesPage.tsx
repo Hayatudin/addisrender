@@ -158,3 +158,68 @@ const ServicesPage = () => {
       <Footer />
     </div>
   );
+  };
+
+interface ServiceSectionProps {
+  icon: React.ReactNode;
+  title: string;
+  imageSrc: string;
+  imageAlt: string;
+  benefits: string[];
+  reversed?: boolean;
+}
+
+const ServiceSection = ({ icon, title, imageSrc, imageAlt, benefits, reversed = false }: ServiceSectionProps) => {
+  return (
+    <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center`}>
+      <div className={`${reversed ? 'lg:order-2' : 'lg:order-1'}`}>
+        <div className="inline-flex h-20 w-20 items-center justify-center rounded-lg bg-rend-accent/20 text-rend-primary mb-6">
+          {icon}
+        </div>
+        <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-rend-dark mb-6">{title}</h3>
+        <ul className="space-y-3 mb-8">
+          {benefits.map((benefit, index) => (
+            <li key={index} className="flex items-start">
+              <CheckCircle2 className="h-5 w-5 text-rend-accent mr-3 mt-0.5 flex-shrink-0" />
+              <span className="text-gray-700">{benefit}</span>
+            </li>
+          ))}
+        </ul>
+        <Button 
+          asChild
+          className="bg-rend-primary hover:bg-rend-light text-white"
+        >
+          <Link to="/quote">Request Service</Link>
+        </Button>
+      </div>
+      <div className={`relative ${reversed ? 'lg:order-1' : 'lg:order-2'}`}>
+        <img 
+          src={imageSrc} 
+          alt={imageAlt} 
+          className="rounded-lg shadow-xl"
+        />
+        <div className={`absolute ${reversed ? '-top-8 -right-8' : '-bottom-8 -left-8'} -z-10 w-full h-full bg-rend-accent/20 rounded-lg`}></div>
+      </div>
+    </div>
+  );
+};
+
+interface ProcessStepProps {
+  number: string;
+  title: string;
+  description: string;
+}
+
+const ProcessStep = ({ number, title, description }: ProcessStepProps) => {
+  return (
+    <div className="bg-white rounded-lg shadow-md p-8 text-center">
+      <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-rend-primary text-white text-2xl font-bold mb-4">
+        {number}
+      </div>
+      <h3 className="font-montserrat font-semibold text-xl mb-3 text-rend-dark">{title}</h3>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  );
+};
+
+export default ServicesPage;
