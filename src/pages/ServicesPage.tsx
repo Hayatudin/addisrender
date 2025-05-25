@@ -104,3 +104,57 @@ const ServicesPage = () => {
                   "Animation for product demonstrations"
                 ]}
               />
+              
+              <ServiceSection 
+                icon={<GraduationCap className="h-12 w-12" />}
+                title="For Students"
+                imageSrc="https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+                imageAlt="Student Project Rendering"
+                benefits={[
+                  "Thesis project visualizations",
+                  "Portfolio-quality architectural renderings",
+                  "Concept development and presentation",
+                  "Affordable packages for academic projects",
+                  "Technical guidance and learning resources"
+                ]}
+                reversed
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Process */}
+        <section className="py-20 bg-rend-gray">
+          <div className="container mx-auto px-4">
+            <div className="max-w-3xl mx-auto text-center mb-16">
+              <h2 className="section-heading mx-auto">Our Process</h2>
+              <p className="text-gray-600">
+                We follow a structured approach to ensure that every project meets our high standards of quality and client satisfaction.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <ProcessStep 
+                number="01"
+                title="Consultation"
+                description="We start by understanding your project needs, goals, and vision through a comprehensive consultation."
+              />
+              <ProcessStep 
+                number="02"
+                title="Modeling & Design"
+                description="Our team creates detailed 3D models based on your specifications, ensuring accuracy and precision."
+              />
+              <ProcessStep 
+                number="03"
+                title="Rendering & Delivery"
+                description="We add materials, lighting, and environmental elements to create photorealistic renderings of your project."
+              />
+            </div>
+          </div>
+        </section>
+
+        <CTASection />
+      </main>
+      <Footer />
+    </div>
+  );
