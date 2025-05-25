@@ -46,3 +46,61 @@ const ServicesPage = () => {
                   "Material and furniture visualization"
                 ]}
               />
+
+              <ServiceSection 
+                icon={<Building2 className="h-12 w-12" />}
+                title="For Architects"
+                imageSrc="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d"
+                imageAlt="Architectural Rendering"
+                benefits={[
+                  "Exterior renderings with precise detailing",
+                  "Building massing and concept models",
+                  "Site context and environmental integration",
+                  "Aerial perspectives and bird's eye views",
+                  "Daylight and shadow studies"
+                ]}
+                reversed
+              />
+
+              <ServiceSection 
+                icon={<TreePine className="h-12 w-12" />}
+                title="For Landscape Designers"
+                imageSrc="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07"
+                imageAlt="Landscape Design Rendering"
+                benefits={[
+                  "Realistic landscape visualizations",
+                  "Garden and outdoor space renderings",
+                  "Seasonal variations of landscape designs",
+                  "Water feature and hardscape elements",
+                  "Growth progression visualization"
+                ]}
+              />
+
+              <ServiceSection 
+                icon={<Home className="h-12 w-12" />}
+                title="For Furniture Manufacturers"
+                imageSrc="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952"
+                imageAlt="Furniture Rendering"
+                benefits={[
+                  "High-quality furniture product renderings",
+                  "Material variations and customization options",
+                  "360° views for interactive product displays",
+                  "Lifestyle context renderings",
+                  "AR-ready 3D models for customer visualization"
+                ]}
+                reversed
+              />
+
+              <ServiceSection 
+                icon={<Briefcase className="h-12 w-12" />}
+                title="For Commercial Brands"
+                imageSrc="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7"
+                imageAlt="Product Rendering"
+                benefits={[
+                  "Product visualization for marketing materials",
+                  "Packaging design renderings",
+                  "Trade show and display visualizations",
+                  "Brand environment and retail space modeling",
+                  "Animation for product demonstrations"
+                ]}
+              />
