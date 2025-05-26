@@ -100,3 +100,103 @@ const FloorPlan = () => {
         features: ["Pooja room", "Shop space", "Dressing area", "Utility wash"]
       }
     },
+    {
+      id: 8,
+      name: "Contemporary Apartment",
+      image: "/lovable-uploads/8ce5eae6-378c-40f3-b5ac-2398c08e1eb1.png",
+      details: {
+        size: "1,500 sq ft",
+        bedrooms: 3,
+        bathrooms: 2,
+        features: ["Open plan living", "Private garden", "Walk-in wardrobe", "Separate dining"]
+      }
+    },
+    {
+      id: 9,
+      name: "Dual Apartment Complex",
+      image: "/lovable-uploads/38890f52-7d43-458a-bb60-c3d76426d026.png",
+      details: {
+        size: "1,300 sq ft per unit",
+        bedrooms: 2,
+        bathrooms: 2,
+        features: ["Mirror layout design", "Central lift area", "Large living spaces", "Dining areas"]
+      }
+    }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActivePlan((prev) => (prev + 1) % floorPlans.length);
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [floorPlans.length]);
+
+  const handlePrevious = () => {
+    setActivePlan((prev) => (prev === 0 ? floorPlans.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setActivePlan((prev) => (prev === floorPlans.length - 1 ? 0 : prev + 1));
+  };
+
+  const handleZoomIn = () => {
+    if (zoomLevel < 2) setZoomLevel(prev => prev + 0.1);
+  };
+
+  const handleZoomOut = () => {
+    if (zoomLevel > 0.5) setZoomLevel(prev => prev - 0.1);
+  };
+
+  const resetZoom = () => {
+    setZoomLevel(1);
+  };
+
+  const currentPlan = floorPlans[activePlan];
+
+  return (
+    <section id="floor-plans" className="py-20 bg-gradient-to-r from-slate-50 to-blue-50">
+      <div className="container mx-auto px-4">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-12">
+          <div className="md:max-w-md mb-8 md:mb-0">
+            <h2 className="text-4xl font-bold text-blue-600 mb-4">Plan Rendering</h2>
+            <div className="glass-card p-5 backdrop-blur-md bg-white/70">
+              <p className="text-gray-700">
+                Explore our high-quality floor plan renderings, designed to bring architectural concepts to 
+                life with precision and clarity.
+              </p>
+            </div>
+            <div className="flex space-x-1 mt-4">
+              <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+              <div className="w-2 h-2 rounded-full bg-blue-600"></div>
+            </div>
+            <Button 
+              asChild
+              className="bg-blue-600 hover:bg-blue-700 text-white mt-6 rounded-full py-2 px-6"
+            >
+              <Link to="/services">View More Plans</Link>
+            </Button>
+          </div>
+          
+          <div className="md:max-w-2xl w-full">
+            <div className="bg-white rounded-xl shadow-lg p-4 relative">
+              <div className="relative overflow-hidden rounded-lg h-[350px] md:h-[400px] flex items-center justify-center">
+                <div className="absolute inset-0">
+                  {floorPlans.map((plan, index) => (
+                    <div 
+                      key={index} 
+                      className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                        index === activePlan ? "opacity-100" : "opacity-0"
+                      }`}
+                    >
+                      <img 
+                        src={plan.image} 
+                        alt={plan.name}
+                        className="w-full h-full object-contain"
+                        style={{ transform: `scale(${zoomLevel})` }}
+                      />
+                    </div>
+                  ))}
+                </div>
