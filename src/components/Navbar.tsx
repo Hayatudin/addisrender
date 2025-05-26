@@ -100,3 +100,105 @@ const Navbar = () => {
               asChild
               className="bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-md ml-2"
             ></Button>
+            <Link to="/login" className="flex items-center gap-2">
+                <LogIn className="h-4 w-4" />
+                Log in
+              </Link>
+            </Button>
+          )}
+        </nav>
+
+        <button className="md:hidden" onClick={toggleMobileMenu}>
+          {isMobileMenuOpen ? (
+            <X className="h-6 w-6 text-rend-dark" />
+          ) : (
+            <Menu className="h-6 w-6 text-rend-dark" />
+          )}
+        </button>
+      </div>
+
+      {isMobileMenuOpen && (
+        <nav className="md:hidden bg-white py-4 px-6 shadow-lg animate-fade-in">
+          <div className="flex flex-col space-y-4">
+            <MobileNavLink href="/services" label="Services" onClick={toggleMobileMenu} />
+            <MobileNavLink href="/about" label="About us" onClick={toggleMobileMenu} />
+            <MobileNavLink href="/portfolio" label="Our works" onClick={toggleMobileMenu} />
+            <MobileNavLink href="/contact" label="Contact" onClick={toggleMobileMenu} />
+            <MobileNavLink href="/faq" label="FAQs" onClick={toggleMobileMenu} />
+            <MobileNavLink href="/quote" label="Quote" onClick={toggleMobileMenu} />
+            
+            {isAdmin && (
+              <MobileNavLink 
+                href="/admin" 
+                label="Admin Panel" 
+                onClick={toggleMobileMenu} 
+              />
+            )}
+            
+            {user ? (
+              <>
+                <MobileNavLink href="/profile" label="Profile" onClick={toggleMobileMenu} />
+                <Button 
+                  variant="outline"
+                  className="text-red-600 border-red-200 hover:bg-red-50 w-full flex items-center justify-center gap-2"
+                  onClick={() => {
+                    signOut();
+                    toggleMobileMenu();
+                  }}
+                >
+                  <LogOut className="h-4 w-4" />
+                  Sign out
+                </Button>
+              </>
+            ) : (
+              <Button 
+                asChild
+                className="bg-blue-500 hover:bg-blue-600 text-white w-full flex items-center justify-center gap-2"
+              >
+                <Link to="/login" onClick={toggleMobileMenu}>
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Log in
+                </Link>
+              </Button>
+            )}
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+};
+
+interface NavLinkProps {
+  href: string;
+  label: string;
+  useDarkText?: boolean;
+}
+
+const NavLink = ({ href, label, useDarkText = false }: NavLinkProps) => {
+  return (
+    <Link
+      to={href}
+      className={`font-medium ${useDarkText ? 'text-rend-dark' : 'text-white'} hover:text-blue-500 transition-colors relative after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 after:bg-blue-400 hover:after:w-full after:transition-all`}
+    >
+      {label}
+    </Link>
+  );
+};
+
+interface MobileNavLinkProps extends NavLinkProps {
+  onClick: () => void;
+}
+
+const MobileNavLink = ({ href, label, onClick }: MobileNavLinkProps) => {
+  return (
+    <Link
+      to={href}
+      className="font-medium text-rend-dark p-2 block hover:bg-rend-gray rounded transition-colors"
+      onClick={onClick}
+    >
+      {label}
+    </Link>
+  );
+};
+
+export default Navbar;
