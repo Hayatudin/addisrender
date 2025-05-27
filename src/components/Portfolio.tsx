@@ -97,3 +97,98 @@ const Portfolio = () => {
             Explore our collection of high-quality 3D renderings showcasing our expertise 
             in bringing architectural and design concepts to life.
           </p>
+          
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <FilterButton 
+              category="all" 
+              active={filter === "all"} 
+              onClick={() => setFilter("all")}
+            >
+              All Projects
+            </FilterButton>
+            <FilterButton 
+              category="interior" 
+              active={filter === "interior"} 
+              onClick={() => setFilter("interior")}
+            >
+              Interior
+            </FilterButton>
+            <FilterButton 
+              category="residential" 
+              active={filter === "residential"} 
+              onClick={() => setFilter("residential")}
+            >
+              Residential
+            </FilterButton>
+            <FilterButton 
+              category="commercial" 
+              active={filter === "commercial"} 
+              onClick={() => setFilter("commercial")}
+            >
+              Commercial
+            </FilterButton>
+            <FilterButton 
+              category="cultural" 
+              active={filter === "cultural"} 
+              onClick={() => setFilter("cultural")}
+            >
+              Cultural
+            </FilterButton>
+            <FilterButton 
+              category="luxury" 
+              active={filter === "luxury"} 
+              onClick={() => setFilter("luxury")}
+            >
+              Luxury
+            </FilterButton>
+          </div>
+        </div>
+
+        {/* Portfolio Grid */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {filteredItems.map((item) => (
+            <PortfolioItem
+              key={item.id}
+              item={item}
+              isHovered={hoveredItem === item.id}
+              onMouseEnter={() => setHoveredItem(item.id)}
+              onMouseLeave={() => setHoveredItem(null)}
+            />
+          ))}
+        </motion.div>
+
+        <div className="text-center mt-12">
+          <Button 
+            asChild
+            className="bg-rend-primary hover:bg-rend-light text-white"
+          >
+            <Link to="/portfolio">View Full Portfolio</Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FilterButton = ({ category, active, onClick, children }: FilterButtonProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`px-4 py-2 rounded-md transition-all ${
+        active 
+          ? "bg-rend-primary text-white" 
+          : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+      }`}
+    >
+      {children}
+    </button>
+  );
+};
+
+export default Portfolio;
