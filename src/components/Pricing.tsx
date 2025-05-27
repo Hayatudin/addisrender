@@ -99,3 +99,67 @@ const Pricing = () => {
             All prices include comprehensive support and professional quality results.
           </p>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+          {pricingTiers.map((tier, index) => (
+            <div 
+              key={index}
+              className={`bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
+                tier.highlighted ? 'border-2 border-rend-accent relative' : ''
+              }`}
+            >
+              {tier.highlighted && (
+                <div className="absolute top-0 left-0 right-0 bg-rend-accent text-rend-dark py-1 text-center text-sm font-medium">
+                  Most Popular
+                </div>
+              )}
+
+              <div className="p-8">
+                <h3 className="font-montserrat font-bold text-xl mb-2 text-rend-dark">{tier.name}</h3>
+                <p className="text-gray-600 mb-4 h-12">{tier.description}</p>
+                <div className="mb-6">
+                  <span className="text-4xl font-bold text-rend-primary">{tier.price}</span>
+                  <span className="text-gray-500"> {tier.priceNote}</span>
+                </div>
+
+                <ul className="space-y-3 mb-8">
+                  {tier.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-start">
+                      <CheckCircle2 className="h-5 w-5 text-rend-accent mr-2 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Button 
+                  asChild
+                  className={`w-full ${
+                    tier.highlighted 
+                      ? 'bg-rend-accent text-rend-dark hover:bg-rend-primary hover:text-white' 
+                      : 'bg-rend-primary text-white hover:bg-rend-light'
+                  }`}
+                >
+                  <Link to={tier.href}>{tier.buttonText}</Link>
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <p className="text-gray-600 mb-4">
+            Need a custom solution for your project?
+          </p>
+          <Button 
+            asChild
+            variant="outline" 
+            className="border-rend-primary text-rend-primary hover:bg-rend-primary hover:text-white"
+          >
+            <Link to="/quote?plan=custom">Contact Us for Custom Pricing</Link>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default Pricing;
