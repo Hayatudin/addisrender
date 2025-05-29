@@ -99,3 +99,88 @@ export function DashboardView() {
       return data;
     }
   });
+   const { data: projects, isLoading: isLoadingProjects } = useQuery({
+    queryKey: ['admin-projects'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    }
+  });
+
+  const refreshData = () => {
+    refetchUsers();
+    toast.success("Dashboard data refreshed");
+  };
+
+  if (isLoadingUsers /* && other loading conditions */) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <Button variant="outline" size="sm" onClick={refreshData}>
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Refresh Data
+        </Button>
+      </div>
+      
+      {usersError && (
+        <Alert variant="destructive">
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            There was an error loading user data. Using sample data instead.
+          </AlertDescription>
+        </Alert>
+      )}
+      
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{users.length}</div>
+            <p className="text-xs text-muted-foreground">
+              Registered users on the platform
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Recent Files</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{recentFiles?.length || 0}</div>
+            <p className="text-xs text-muted-foreground">
+              Files uploaded via quotes
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Active Administrator</CardTitle>
+            <User className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">1</div>
+            <p className="text-xs text-muted-foreground">
+              Admin account active
+            </p>
+          </CardContent>
+        </Card>
+      </div>
