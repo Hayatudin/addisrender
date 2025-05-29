@@ -184,3 +184,92 @@ export function DashboardView() {
           </CardContent>
         </Card>
       </div>
+<Card>
+        <CardHeader>
+          <CardTitle>Registered Users</CardTitle>
+          <CardDescription>List of users registered on the platform</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingUsers ? (
+            <div className="flex items-center justify-center p-6">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
+          ) : users && users.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>User ID</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Registration Date</TableHead>
+                  <TableHead>Last Sign In</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell className="font-medium">{user.id.slice(0, 8)}...</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                    <TableCell>{user.created_at}</TableCell>
+                    <TableCell>{user.last_sign_in_at || 'Never'}</TableCell>
+                    <TableCell>
+                      <Badge className="bg-green-500">Active</Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <Users className="h-10 w-10 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">No users found</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                There are no registered users in the database yet.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent File Uploads</CardTitle>
+          <CardDescription>Latest files uploaded through the quote form</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingFiles ? (
+            <div className="flex items-center justify-center p-6">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
+          ) : recentFiles && recentFiles.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>File Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Upload Date</TableHead>
+                  <TableHead>Description</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {recentFiles.map((file: any) => (
+                  <TableRow key={file.id}>
+                    <TableCell className="font-medium">{file.file_name}</TableCell>
+                    <TableCell>{file.file_type || 'Unknown'}</TableCell>
+                    <TableCell>{new Date(file.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>{file.description || 'No description'}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <FileText className="h-10 w-10 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">No files uploaded</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                No files have been uploaded through the quote form yet.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
