@@ -197,3 +197,119 @@ export function ProjectsView() {
             </div>
           ) : files && files.length > 0 ? (
             <Table></Table>
+            <TableHeader>
+                <TableRow>
+                  <TableHead>File Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead>Upload Date</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {files.map((file) => (
+                  <TableRow key={file.id}>
+                    <TableCell className="font-medium">{file.file_name}</TableCell>
+                    <TableCell>{file.file_type || 'Unknown'}</TableCell>
+                    <TableCell>{file.file_size ? formatFileSize(file.file_size) : 'N/A'}</TableCell>
+                    <TableCell>{new Date(file.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+                        Active
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="space-x-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handlePreview(file.file_url, file.file_type)}
+                      >
+                        <Eye className="h-4 w-4 mr-1" />
+                        Preview
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        onClick={() => handleDownload(file.file_url, file.file_name)}
+                      >
+                        <Download className="h-4 w-4 mr-1" />
+                        Download
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="text-red-500 hover:text-red-700"
+                            onClick={() => handleDeleteFile(file)}
+                          >
+                            <Trash2 className="h-4 w-4 mr-1" />
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will permanently delete the file
+                              "{fileToDelete?.file_name}" from the storage and database.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={confirmDelete} className="bg-red-500 hover:bg-red-600">
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-12 text-center">
+              <FileText className="h-16 w-16 text-muted-foreground mb-4" />
+              <h3 className="text-xl font-medium">No Quote Files Uploaded</h3>
+              <p className="text-muted-foreground mt-2 max-w-md">
+                When users submit quotes with files through your website's quote page, they will appear here.
+              </p>
+            </div>
+          )}
+        </CardContent>
+        {files && files.length > 0 && (
+          <CardFooter>
+            <div className="w-full flex justify-between items-center">
+              <p className="text-sm text-muted-foreground">
+                Showing {files.length} quote file{files.length !== 1 ? 's' : ''}
+              </p>
+            </div>
+          </CardFooter>
+        )}
+      </Card>
+      
+      {/* File Preview Modal */}
+      {previewUrl && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg overflow-hidden max-w-4xl w-full max-h-[90vh] flex flex-col">
+            <div className="p-4 border-b flex justify-between items-center">
+              <h3 className="font-medium">File Preview</h3>
+              <Button variant="ghost" size="sm" onClick={closePreview}>
+                Close
+              </Button>
+            </div>
+            <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
+              <iframe 
+                src={previewUrl} 
+                className="w-full h-full border-0" 
+                title="File Preview"
+              />
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
