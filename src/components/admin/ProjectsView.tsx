@@ -97,3 +97,103 @@ export function ProjectsView() {
       deleteFileMutation.mutate(fileToDelete);
     }
   };
+
+  const handleDownload = async (fileUrl: string, fileName: string) => {
+    try {
+      toast.loading("Preparing download...");
+      
+      // For public buckets, we can generate a signed URL
+      const { data, error } = await supabase.storage
+        .from('quote-files')
+        .createSignedUrl(fileUrl, 60); // 60 seconds expiry
+      
+      if (error) {
+        console.error('Error creating signed URL:', error);
+        toast.dismiss();
+        toast.error(`Failed to download ${fileName}: ${error.message}`);
+        return;
+      }
+      
+      // Create a download link
+      const link = document.createElement('a');
+      link.href = data.signedUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      
+      toast.dismiss();
+      toast.success(`Downloaded ${fileName}`);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      toast.dismiss();
+      toast.error('Failed to download file. Please try again.');
+    }
+  };
+  
+  const handlePreview = async (fileUrl: string, fileType: string | null) => {
+    try {
+      // Only attempt to preview files that are typically viewable in browser
+      const viewableTypes = ['image/', 'text/', 'application/pdf'];
+      const isViewable = fileType && viewableTypes.some(type => fileType.startsWith(type));
+      
+      if (!isViewable) {
+        toast.error("This file type cannot be previewed in browser");
+        return;
+      }
+      
+      toast.loading("Loading preview...");
+      
+      const { data, error } = await supabase.storage
+        .from('quote-files')
+        .createSignedUrl(fileUrl, 60);
+      
+      if (error) {
+        console.error('Error creating signed URL for preview:', error);
+        toast.dismiss();
+        toast.error(`Failed to preview file: ${error.message}`);
+        return;
+      }
+      
+      setPreviewUrl(data.signedUrl);
+      toast.dismiss();
+    } catch (error) {
+      console.error('Error previewing file:', error);
+      toast.dismiss();
+      toast.error('Failed to load preview');
+    }
+  };
+  
+  const closePreview = () => {
+    setPreviewUrl(null);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Quote Files</h1>
+        <Button 
+          variant="outline" 
+          size="sm"
+          onClick={() => {
+            refetch();
+            toast.success("Quote files refreshed");
+          }}
+        >
+          <RefreshCw className="h-4 w-4 mr-2" />
+          Refresh
+        </Button>
+      </div>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Uploaded Quote Files</CardTitle>
+          <CardDescription>Files uploaded through the quote form</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
+          ) : files && files.length > 0 ? (
+            <Table></Table>
