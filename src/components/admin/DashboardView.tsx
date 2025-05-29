@@ -273,3 +273,93 @@ export function DashboardView() {
           )}
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Contact Submissions</CardTitle>
+          <CardDescription>Latest inquiries from the contact form</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingSubmissions ? (
+            <div className="flex items-center justify-center p-6">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
+          ) : contactSubmissions && contactSubmissions.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Message</TableHead>
+                  <TableHead>Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {contactSubmissions.map((submission: any) => (
+                  <TableRow key={submission.id}>
+                    <TableCell className="font-medium">{submission.name}</TableCell>
+                    <TableCell>{submission.email}</TableCell>
+                    <TableCell className="max-w-md truncate">{submission.message}</TableCell>
+                    <TableCell>{new Date(submission.created_at).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <AlertCircle className="h-10 w-10 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">No contact submissions</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                When users submit the contact form, their messages will appear here.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Projects</CardTitle>
+          <CardDescription>Latest project files uploaded by users</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {isLoadingProjects ? (
+            <div className="flex items-center justify-center p-6">
+              <div className="animate-spin h-8 w-8 border-4 border-blue-500 rounded-full border-t-transparent"></div>
+            </div>
+          ) : projects && projects.length > 0 ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>File Name</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Size</TableHead>
+                  <TableHead>Upload Date</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {projects.map((project: any) => (
+                  <TableRow key={project.id}>
+                    <TableCell className="font-medium">{project.title}</TableCell>
+                    <TableCell>{project.file_name}</TableCell>
+                    <TableCell>{project.file_type || 'Unknown'}</TableCell>
+                    <TableCell>{project.file_size ? `${Math.round(project.file_size / 1024)} KB` : 'N/A'}</TableCell>
+                    <TableCell>{new Date(project.created_at).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <div className="flex flex-col items-center justify-center p-8 text-center">
+              <AlertCircle className="h-10 w-10 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-medium">No projects uploaded</h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                When users upload project files, they will appear here.
+              </p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
